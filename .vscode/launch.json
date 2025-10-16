@@ -10,12 +10,31 @@
             "justMyCode": true
         },
         {
-            "name": "Run Verification",
+            "name": "Phase 1: Learn Parameters",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/lyapunov_verification.py",
+            "program": "${workspaceFolder}/src/1_learn_parameters.py",
             "console": "integratedTerminal",
-            "args": [],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Phase 2: Verification",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/2_lyapunov_verification.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Phase 3: Statistical Analysis",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/3_statistical_analysis.py",
+            "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             }

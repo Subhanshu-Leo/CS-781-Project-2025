@@ -587,6 +587,7 @@ def main():
             # Extract Q and R from learned parameters
             Q = np.array(learned_params['Q'])
             R = np.array(learned_params['R'])
+            K = np.array(learned_params['K'])
 
             print("✓ Successfully loaded learned parameters")
             print(f"\nLearned Parameters:")

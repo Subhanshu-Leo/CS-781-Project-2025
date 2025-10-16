@@ -1,0 +1,45 @@
+# config/system_params.yaml
+
+system:
+  velocity: 15.0              # m/s
+  control_effectiveness: 0.5  # steering effectiveness coefficient
+  lane_width: 3.5             # m (total width)
+
+dynamics:
+  A_matrix:
+    - [0, 1, 0, 0]
+    - [0, 0, 15.0, 0]
+    - [0, 0, 0, 1]
+    - [0, 0, 0, 0]
+
+  B_matrix:
+    - [0]
+    - [0]
+    - [0]
+    - [0.5]
+
+optimization:
+  n_iterations: 50
+  n_samples_per_iteration: 100
+  random_seed: 42
+
+  parameter_bounds:
+    Q1: [10, 200]
+    Q2: [1, 50]
+    Q3: [10, 100]
+    Q4: [1, 20]
+    R: [0.1, 10]
+
+initial_conditions:
+  x1: [-0.5, 0.5]      # lateral position
+  x2: [-0.1, 0.1]      # lateral velocity
+  x3: [-0.175, 0.175]  # heading angle
+  x4: [-0.05, 0.05]    # heading rate
+
+verification:
+  lyapunov_residual_threshold: 1e-8
+  positive_definite_threshold: 1e-10
+
+statistics:
+  monte_carlo_samples: 10000
+  confidence_level: 0.95
