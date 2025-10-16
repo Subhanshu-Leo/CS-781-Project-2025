@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Verification",
+            "type": "shell",
+            "command": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "src/lyapunov_verification.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "-m",
+                "pytest",
+                "tests",
+                "-v"
+            ],
+            "group": "test"
+        },
+        {
+            "label": "Format Code",
+            "type": "shell",
+            "command": "${workspaceFolder}/venv/bin/black",
+            "args": [
+                "src",
+                "tests"
+            ]
+        },
+        {
+            "label": "Lint Code",
+            "type": "shell",
+            "command": "${workspaceFolder}/venv/bin/flake8",
+            "args": [
+                "src",
+                "tests"
+            ]
+        }
+    ]
+}
