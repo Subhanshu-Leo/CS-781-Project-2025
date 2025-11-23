@@ -2,12 +2,42 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run Verification",
+            "label": "Run Phase 1: Learn Parameters",
             "type": "shell",
             "command": "${workspaceFolder}/venv/bin/python",
-            "args": [
-                "src/lyapunov_verification.py"
-            ],
+            "args": ["src/1_learn_parameters.py"],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Phase 2: Verification",
+            "type": "shell",
+            "command": "${workspaceFolder}/venv/bin/python",
+            "args": ["src/2_lyapunov_verification.py"],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Phase 3: Statistical Analysis",
+            "type": "shell",
+            "command": "${workspaceFolder}/venv/bin/python",
+            "args": ["src/3_statistical_analysis.py"],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Complete Pipeline",
+            "type": "shell",
+            "command": "${workspaceFolder}/run_complete_project.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -21,31 +51,20 @@
             "label": "Run Tests",
             "type": "shell",
             "command": "${workspaceFolder}/venv/bin/python",
-            "args": [
-                "-m",
-                "pytest",
-                "tests",
-                "-v"
-            ],
+            "args": ["-m", "pytest", "tests", "-v"],
             "group": "test"
         },
         {
             "label": "Format Code",
             "type": "shell",
-            "command": "${workspaceFolder}/venv/bin/black",
-            "args": [
-                "src",
-                "tests"
-            ]
+            "command": "${workspaceFolder}/venv/bin/python",
+            "args": ["-m", "black", "src", "tests"]
         },
         {
-            "label": "Lint Code",
+            "label": "Test Setup",
             "type": "shell",
-            "command": "${workspaceFolder}/venv/bin/flake8",
-            "args": [
-                "src",
-                "tests"
-            ]
+            "command": "${workspaceFolder}/venv/bin/python",
+            "args": ["test_setup.py"]
         }
     ]
 }
