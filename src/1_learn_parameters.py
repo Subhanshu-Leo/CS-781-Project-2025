@@ -38,7 +38,7 @@ class LQRParameterLearner:
         self.best_params = None
         self.best_violation_rate = 1.0
         self.history = []
-        
+
         # Current iteration tracking
         self.iteration = 0
 
@@ -71,7 +71,7 @@ class LQRParameterLearner:
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         # Define parameter ranges (semantic features)
         lateral_offset_range = (-0.5, 0.5)      # meters
@@ -81,7 +81,7 @@ class LQRParameterLearner:
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         for _ in range(n_samples):
             # Sample from uniform distributions (Scenic-like behavior)
@@ -95,7 +95,7 @@ class LQRParameterLearner:
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         return samples
 
@@ -108,7 +108,7 @@ class LQRParameterLearner:
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         # Extract parameters
         Q = np.diag([params['Q1'], params['Q2'], params['Q3'], params['Q4']])
@@ -125,7 +125,7 @@ class LQRParameterLearner:
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         violations = 0
 
@@ -171,7 +171,7 @@ class LQRParameterLearner:
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         Note: This uses scikit-optimize as a stand-in for VerifAI's
         optimization framework. In a full VerifAI integration, this would
@@ -230,19 +230,19 @@ class LQRParameterLearner:
         print(f"  Q = diag{np.diag(np.array(self.best_params['Q']))}")
         print(f"  R = {self.best_params['R'][0][0]:.3f}")
         print(f"  K = {np.array(self.best_params['K']).flatten()}")
-        
+
         # Print optimization statistics
         print(f"\nOptimization Statistics:")
         print(f"  Total evaluations: {len(self.history)}")
         print(f"  Convergence: {'Good' if self.best_violation_rate < 0.05 else 'Partial'}")
-        
+
         # Analyze controller stability
         Q = np.array(self.best_params['Q'])
         R = np.array(self.best_params['R'])
         K = np.array(self.best_params['K'])
         A_cl = self.A - self.B @ K
         eigenvalues = np.linalg.eigvals(A_cl)
-        
+
         print(f"\nController Properties:")
         print(f"  Closed-loop eigenvalues: {eigenvalues}")
         print(f"  All stable: {np.all(np.real(eigenvalues) < 0)}")
@@ -295,7 +295,7 @@ class LQRParameterLearner:
             json.dump(results, f, indent=2)
 
         print("\n✓ Results saved to results/learned_parameters.json")
-        
+
         # Also save a summary for quick reference
         summary = {
             'Q_diagonal': list(np.diag(np.array(self.best_params['Q']))),
@@ -303,10 +303,10 @@ class LQRParameterLearner:
             'K_gains': list(np.array(self.best_params['K']).flatten()),
             'violation_rate_percent': self.best_violation_rate * 100
         }
-        
+
         with open('results/learned_params_summary.json', 'w') as f:
             json.dump(summary, f, indent=2)
-        
+
         print("✓ Summary saved to results/learned_params_summary.json")
 
         # Also save a summary for quick reference
@@ -329,7 +329,7 @@ def main():
 <<<<<<< HEAD
 
 =======
-    
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     # Parse command line arguments
     parser = argparse.ArgumentParser(
@@ -351,9 +351,9 @@ def main():
     args = parser.parse_args()
 
 =======
-    
+
     args = parser.parse_args()
-    
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     # Override for demo mode
     if args.demo:
@@ -387,7 +387,7 @@ def main():
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         print("\n" + "="*70)
         print("✓ PHASE 1 COMPLETE")
@@ -400,7 +400,7 @@ def main():
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     except KeyboardInterrupt:
         print("\n\n⚠ Optimization interrupted by user")
@@ -412,7 +412,7 @@ def main():
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     except Exception as e:
         print(f"\n✗ Error during optimization: {e}")
