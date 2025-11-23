@@ -42,9 +42,6 @@ class LQRParameterLearner:
         # Current iteration tracking
         self.iteration = 0
 
-        # Current iteration tracking
-        self.iteration = 0
-
     def compute_lqr_gain(self, Q, R):
         """Compute LQR gain from Q, R matrices"""
         try:
@@ -68,21 +65,13 @@ class LQRParameterLearner:
         Mimics Scenic's probabilistic sampling behavior
         """
         samples = []
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         # Define parameter ranges (semantic features)
         lateral_offset_range = (-0.5, 0.5)      # meters
         lateral_velocity_range = (-0.1, 0.1)    # m/s
         heading_angle_range = (-0.175, 0.175)   # radians (±10 degrees)
         heading_rate_range = (-0.05, 0.05)      # rad/s
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         for _ in range(n_samples):
             # Sample from uniform distributions (Scenic-like behavior)
             x0 = np.array([
@@ -92,11 +81,7 @@ class LQRParameterLearner:
                 np.random.uniform(*heading_rate_range)
             ])
             samples.append(x0)
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         return samples
 
     def evaluate_parameters(self, params):
@@ -105,11 +90,7 @@ class LQRParameterLearner:
         Returns: violation rate (objective to minimize)
         """
         self.iteration += 1
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         # Extract parameters
         Q = np.diag([params['Q1'], params['Q2'], params['Q3'], params['Q4']])
         R = np.array([[params['R']]])
@@ -122,11 +103,7 @@ class LQRParameterLearner:
         # Sample scenarios
         n_samples = 100
         initial_conditions = self.sample_initial_conditions(n_samples)
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         violations = 0
 
         # Simulate on sampled initial conditions
@@ -168,11 +145,7 @@ class LQRParameterLearner:
         """
         Run optimization to find best Q, R parameters
         Uses Bayesian Optimization via scikit-optimize
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         Note: This uses scikit-optimize as a stand-in for VerifAI's
         optimization framework. In a full VerifAI integration, this would
         use VerifAI's falsifier and sampler directly.
@@ -248,23 +221,6 @@ class LQRParameterLearner:
         print(f"  All stable: {np.all(np.real(eigenvalues) < 0)}")
         print(f"  Convergence rate: {-np.max(np.real(eigenvalues)):.3f} rad/s")
 
-        # Print optimization statistics
-        print(f"\nOptimization Statistics:")
-        print(f"  Total evaluations: {len(self.history)}")
-        print(f"  Convergence: {'Good' if self.best_violation_rate < 0.05 else 'Partial'}")
-
-        # Analyze controller stability
-        Q = np.array(self.best_params['Q'])
-        R = np.array(self.best_params['R'])
-        K = np.array(self.best_params['K'])
-        A_cl = self.A - self.B @ K
-        eigenvalues = np.linalg.eigvals(A_cl)
-
-        print(f"\nController Properties:")
-        print(f"  Closed-loop eigenvalues: {eigenvalues}")
-        print(f"  All stable: {np.all(np.real(eigenvalues) < 0)}")
-        print(f"  Convergence rate: {-np.max(np.real(eigenvalues)):.3f} rad/s")
-
         # Save results
         self.save_results()
 
@@ -309,28 +265,11 @@ class LQRParameterLearner:
 
         print("✓ Summary saved to results/learned_params_summary.json")
 
-        # Also save a summary for quick reference
-        summary = {
-            'Q_diagonal': list(np.diag(np.array(self.best_params['Q']))),
-            'R_value': self.best_params['R'][0][0],
-            'K_gains': list(np.array(self.best_params['K']).flatten()),
-            'violation_rate_percent': self.best_violation_rate * 100
-        }
-
-        with open('results/learned_params_summary.json', 'w') as f:
-            json.dump(summary, f, indent=2)
-
-        print("✓ Summary saved to results/learned_params_summary.json")
-
 
 def main():
     """Main learning pipeline"""
     import argparse
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description='Learn LQR parameters using VerifAI-style optimization'
@@ -346,15 +285,9 @@ def main():
         action='store_true',
         help='Run quick demo with 5 iterations'
     )
-<<<<<<< HEAD
 
     args = parser.parse_args()
 
-=======
-
-    args = parser.parse_args()
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     # Override for demo mode
     if args.demo:
         n_iterations = 5
@@ -384,11 +317,7 @@ def main():
     # Run optimization
     try:
         best_params = learner.optimize(n_iterations=n_iterations)
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
         print("\n" + "="*70)
         print("✓ PHASE 1 COMPLETE")
         print("="*70)
@@ -397,11 +326,7 @@ def main():
         print("  2. Run formal verification:")
         print("     python src/2_lyapunov_verification.py")
         print("="*70 + "\n")
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     except KeyboardInterrupt:
         print("\n\n⚠ Optimization interrupted by user")
         if learner.best_params is not None:
@@ -409,11 +334,7 @@ def main():
             learner.save_results()
             print("✓ Partial results saved")
         sys.exit(1)
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e7a6ffaa69085e015a5923f5741c6582052f915e
     except Exception as e:
         print(f"\n✗ Error during optimization: {e}")
         import traceback
