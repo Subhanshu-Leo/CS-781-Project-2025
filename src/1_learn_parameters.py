@@ -226,7 +226,7 @@ class LQRParameterLearner:
                 'K': K.tolist(),
                 'violation_rate': violation_rate
             }
-            print(f"  ✓ Iteration {self.iteration}: New best! "
+            print(f"    Iteration {self.iteration}: New best! "
                   f"Violation rate: {violation_rate*100:.2f}%")
         else:
             if self.iteration % 5 == 0:
@@ -285,7 +285,7 @@ class LQRParameterLearner:
         if not self.use_verifai:
             print("\n⚠ VerifAI not available. Using fallback sampling.")
         else:
-            print("\n✓ Using VerifAI FeatureSampler for scenario generation")
+            print("\n  Using VerifAI FeatureSampler for scenario generation")
 
         print("="*70)
         print("PHASE 1: LEARNING LQR PARAMETERS")
@@ -400,7 +400,7 @@ class LQRParameterLearner:
         with open('results/learned_parameters.json', 'w') as f:
             json.dump(results, f, indent=2)
 
-        print("\n✓ Results saved to results/learned_parameters.json")
+        print("\n  Results saved to results/learned_parameters.json")
 
         # Summary
         summary = {
@@ -414,7 +414,7 @@ class LQRParameterLearner:
         with open('results/learned_params_summary.json', 'w') as f:
             json.dump(summary, f, indent=2)
 
-        print("✓ Summary saved to results/learned_params_summary.json")
+        print("  Summary saved to results/learned_params_summary.json")
 
 
 def main():
@@ -475,7 +475,7 @@ def main():
     print(f"  Control effectiveness: {system_params['control_effectiveness']}")
 
     if VERIFAI_AVAILABLE and not args.no_verifai:
-        print(f"\n✓ VerifAI Integration: ENABLED")
+        print(f"\n  VerifAI Integration: ENABLED")
     else:
         print(f"\n⚠ VerifAI Integration: DISABLED (using fallback)")
     print()
@@ -489,7 +489,7 @@ def main():
         best_params = learner.optimize(n_iterations=n_iterations)
 
         print("\n" + "="*70)
-        print("✓ PHASE 1 COMPLETE")
+        print(" PHASE 1 COMPLETE")
         print("="*70)
         print("\nNext Steps:")
         print("  1. Review learned parameters in results/learned_parameters.json")
@@ -502,7 +502,7 @@ def main():
         if learner.best_params is not None:
             print(f"Saving best parameters found so far...")
             learner.save_results()
-            print("✓ Partial results saved")
+            print("  Partial results saved")
         sys.exit(1)
 
     except Exception as e:
