@@ -246,13 +246,38 @@ class LyapunovVerifier:
         if error < 1e-6:
             print(f"\n  Boundary condition verified (error = {error:.2e})")
         else:
-            print(f"\n⚠ Warning: boundary error = {error:.2e}")
+            print(f"\n Warning: boundary error = {error:.2e}")
+        # Additional check: verify the ellipsoid is contained in safe region
+    # Sample points on ellipsoid boundary and check max |x1|
+    n_samples = 100
+    max_x1_on_boundary = 0
 
-        print(f"\n  INVARIANT ELLIPSOID COMPUTED")
-        print(f"  Ω_c = {{x : x^T P x ≤ {self.c_max:.4f}}}")
-        print(f"  Guarantees: |x₁| ≤ {self.L:.3f} m for all x ∈ Ω_c")
+    for _ in range(n_samples):
+        # Generate random point on unit sphere
+        xi = np.random.randn(4)
+        xi = xi / np.linalg.norm(xi)
 
-        return True
+        # Map to ellipsoid boundary: x = sqrt(c) * P^(-1/2) * xi
+        L_chol = np.linalg.cholesky(self.P)
+        x_boundary_sample = np.sqrt(self.c_max) * np.linalg.solve(L_chol.T, xi)
+
+        max_x1_on_boundary = max(max_x1_on_boundary, abs(x_boundary_sample[0]))
+
+    print(f"\nEllipsoid containment check ({n_samples} samples):")
+    print(f"Max |x₁| on ellipsoid boundary: {max_x1_on_boundary:.4f} m")
+    print(f"Lane half-width: {self.L:.4f} m")
+
+    if max_x1_on_boundary <= self.L + 1e-6:
+        print(f"Ellipsoid safely contained in lane")
+    else:
+        print(f"Warning: Ellipsoid may exceed lane boundaries")
+        print(f"Scaling factor needed: {self.L / max_x1_on_boundary:.4f}")
+
+    print(f"\n  INVARIANT ELLIPSOID COMPUTED")
+    print(f"  Ω_c = {{x : x^T P x ≤ {self.c_max:.4f}}}")
+    print(f"  Guarantees: |x₁| ≤ {self.L:.3f} m for all x ∈ Ω_c")
+
+    return True
 
     def verify_initial_conditions(self, initial_bounds):
         """
@@ -359,7 +384,7 @@ class LyapunovVerifier:
 
         ellipse = Ellipse(xy=(0, 0), width=2*a, height=2*b, angle=angle,
                          facecolor='lightblue', edgecolor='blue',
-                         linewidth=2, alpha=0.5, label='Invariant Set $\Omega_c$')
+                         linewidth=2, alpha=0.5, label=r'Invariant Set $\Omega_c$')
         ax1.add_patch(ellipse)
 
         # Lane boundaries

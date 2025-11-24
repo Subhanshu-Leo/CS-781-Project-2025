@@ -1,5 +1,5 @@
 #!/bin/bash
-# Complete project pipeline
+# Complete project pipeline with baseline comparison
 
 echo "========================================================================"
 echo "LANE KEEPING VERIFICATION - COMPLETE PIPELINE"
@@ -46,6 +46,15 @@ if [ $? -ne 0 ]; then
 fi
 echo ""
 
+# NEW: Phase 4: Baseline Comparison
+echo "PHASE 4: Baseline Comparison Analysis"
+echo "----------------------------------------------------------------"
+python src/baseline_comparison.py
+if [ $? -ne 0 ]; then
+    echo "Warning: Baseline comparison failed"
+fi
+echo ""
+
 # Display results
 echo "========================================================================"
 echo "PIPELINE COMPLETE"
@@ -59,9 +68,11 @@ echo "  - results/ellipsoid_projection.png"
 echo "  - results/trajectory_analysis.png"
 echo "  - results/phase_portrait.png"
 echo "  - results/statistical_analysis.png"
+echo "  - results/baseline_comparison.png"
 echo ""
 echo "Certificates:"
 echo "  - results/verification_certificate.txt"
 echo "  - results/learned_parameters.json"
 echo "  - results/statistical_analysis.json"
+echo "  - results/baseline_comparison.json"
 echo ""

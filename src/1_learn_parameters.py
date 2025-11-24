@@ -121,17 +121,23 @@ class LQRParameterLearner:
 
     def create_verifai_sampler(self):
         """Create VerifAI sampler for initial conditions"""
-        sampler_params = DotMap()
+        from verifai.features import Struct, Box, Feature, FeatureSpace
+        from verifai.samplers import FeatureSampler
 
-        # Define feature space (replaces Scenic for this simple case)
-        sampler_params.features = DotMap()
-        sampler_params.features.lateral_offset = (-0.5, 0.5)
-        sampler_params.features.lateral_velocity = (-0.1, 0.1)
-        sampler_params.features.heading_error = (-0.175, 0.175)  # ±10 degrees
-        sampler_params.features.heading_rate = (-0.05, 0.05)
+    # Define feature space using proper VerifAI syntax
+        control_params = Struct({
+        'lateral_offset': Box([-0.5, 0.5]),
+        'lateral_velocity': Box([-0.1, 0.1]),
+        'heading_error': Box([-0.175, 0.175]),
+        'heading_rate': Box([-0.05, 0.05])
+         })
 
-        # Create sampler
-        sampler = FeatureSampler.from_dict(sampler_params.features)
+        sample_space = FeatureSpace({
+        'params': Feature(control_params)
+        })
+
+    # Create sampler using random sampling
+        sampler = FeatureSampler.randomSamplerFor(sample_space)
 
         return sampler
 
@@ -156,11 +162,14 @@ class LQRParameterLearner:
         samples = []
         for _ in range(n_samples):
             sample = sampler.nextSample()
+            # VerifAI returns a SpacePoint with a StructPoint inside
+            # Each field is wrapped in a tuple, so extract the first element
+            params = sample.params  # This is a StructPoint
             x0 = np.array([
-                sample['lateral_offset'],
-                sample['lateral_velocity'],
-                sample['heading_error'],
-                sample['heading_rate']
+            params.lateral_offset[0],      # Extract from tuple
+            params.lateral_velocity[0],    # Extract from tuple
+            params.heading_error[0],       # Extract from tuple
+            params.heading_rate[0]         # Extract from tuple
             ])
             samples.append(x0)
         return samples
