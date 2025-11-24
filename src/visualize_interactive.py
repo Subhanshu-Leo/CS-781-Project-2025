@@ -34,7 +34,7 @@ def create_interactive_dashboard():
     )
 
     fig.write_html('results/interactive_dashboard.html')
-    print("✓ Interactive dashboard: results/interactive_dashboard.html")
+    print(" Interactive dashboard: results/interactive_dashboard.html")
 
 if __name__ == '__main__':
     create_interactive_dashboard()

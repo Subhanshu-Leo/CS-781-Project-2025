@@ -108,9 +108,9 @@ def compare_with_baselines():
     # Load learned parameters
     try:
         Q_learned, R_learned, K_learned, learned_violation_rate = load_learned_parameters()
-        print("\n✓ Loaded learned controller from Phase 1")
+        print("\nLoaded learned controller from Phase 1")
     except FileNotFoundError:
-        print("\n✗ Error: Learned parameters not found")
+        print("\n Error: Learned parameters not found")
         print("Please run Phase 1 first: python src/1_learn_parameters.py")
         return
 
@@ -165,7 +165,7 @@ def compare_with_baselines():
             print(f"  Max lateral deviation: {result['max_lateral']:.4f} m")
             print(f"  Mean lateral deviation: {result['mean_lateral']:.4f} m")
         else:
-            print(f"  ✗ UNSTABLE CONTROLLER")
+            print(f"   UNSTABLE CONTROLLER")
 
     # Compute improvements
     print("\n" + "="*70)
@@ -199,7 +199,7 @@ def compare_with_baselines():
 
         if learned_result['violation_rate'] < best_baseline['violation_rate']:
             improvement = (best_baseline['violation_rate'] - learned_result['violation_rate']) / best_baseline['violation_rate'] * 100
-            print(f"\n✓✓ LEARNED CONTROLLER IS BETTER")
+            print(f"\n✓LEARNED CONTROLLER IS BETTER")
             print(f"  Improvement: {improvement:.1f}%")
         else:
             print(f"\n⚠ Best baseline performs better")
@@ -223,8 +223,8 @@ def compare_with_baselines():
     with open('results/baseline_comparison.json', 'w') as f:
         json.dump(results_serializable, f, indent=2)
 
-    print("\n✓ Results saved to results/baseline_comparison.json")
-    print("✓ Plots saved to results/baseline_comparison.png")
+    print("\nResults saved to results/baseline_comparison.json")
+    print("Plots saved to results/baseline_comparison.png")
 
 
 def generate_comparison_plots(results):

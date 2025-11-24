@@ -51,15 +51,15 @@ class LyapunovVerifier:
             print(f"  λ_{i+1} = {λ:.4f}")
 
         if all_stable:
-            print("\n✓ All eigenvalues have negative real part")
-            print("✓ System is exponentially stable")
+            print("\n  All eigenvalues have negative real part")
+            print("  System is exponentially stable")
 
             # Compute convergence rate
             max_real = np.max(np.real(eigenvalues))
             print(f"\nConvergence rate: α = {-max_real:.4f} rad/s")
             print(f"Time to 1% of initial: {-np.log(0.01)/max_real:.2f} s")
         else:
-            print("\n✗ FAILED: System is unstable")
+            print("\n FAILED: System is unstable")
             return False
 
         return True
@@ -81,10 +81,10 @@ class LyapunovVerifier:
             print(f"  λ_{i+1}(P) = {λ:.6f}")
 
         if P_positive_def:
-            print("\n✓ P is positive definite")
-            print("✓ V(x) = x^T P x is a valid Lyapunov function")
+            print("\n  P is positive definite")
+            print("  V(x) = x^T P x is a valid Lyapunov function")
         else:
-            print("\n✗ FAILED: P is not positive definite")
+            print("\n FAILED: P is not positive definite")
             return False
 
         # Verify Lyapunov equation
@@ -95,7 +95,7 @@ class LyapunovVerifier:
         print(f"\nLyapunov equation residual: {max_error:.2e}")
 
         if max_error < 1e-8:
-            print("✓ Lyapunov equation satisfied: A_cl^T P + P A_cl = -Q")
+            print("  Lyapunov equation satisfied: A_cl^T P + P A_cl = -Q")
         else:
             print(f"⚠ Warning: Large residual {max_error:.2e}")
 
@@ -104,10 +104,10 @@ class LyapunovVerifier:
         Q_positive_def = np.all(eigenvalues_Q > 1e-10)
 
         if Q_positive_def:
-            print("✓ Q is positive definite")
-            print("✓ V̇(x) = -x^T Q x < 0 for all x ≠ 0")
+            print("  Q is positive definite")
+            print("  V̇(x) = -x^T Q x < 0 for all x ≠ 0")
         else:
-            print("\n✗ FAILED: Q is not positive definite")
+            print("\n FAILED: Q is not positive definite")
             return False
 
         print(f"\n LYAPUNOV FUNCTION VERIFIED")
@@ -160,10 +160,10 @@ class LyapunovVerifier:
             print(f"  ||x|| = {np.linalg.norm(worst_state):.4f}")
 
         if violations == 0 and max_V_dot < 0:
-            print(f"\n✓✓ NUMERICAL VERIFICATION PASSED")
+            print(f"\n   NUMERICAL VERIFICATION PASSED")
             print(f"   V̇(x) < 0 confirmed on all {n_samples} samples")
         elif violations == 0:
-            print(f"\n✓ NUMERICAL VERIFICATION ACCEPTABLE")
+            print(f"\n  NUMERICAL VERIFICATION ACCEPTABLE")
             print(f"   V̇(x) ≤ 0 on all samples (max within tolerance)")
         else:
             print(f"\n⚠ WARNING: Found {violations} numerical violations")
@@ -208,7 +208,7 @@ class LyapunovVerifier:
         print(f"  Trajectories with V increasing: {trajectory_violations}")
 
         if trajectory_violations == 0:
-            print(f"\n✓✓ TRAJECTORY VERIFICATION PASSED")
+            print(f"\n   TRAJECTORY VERIFICATION PASSED")
             print(f"   V(x(t)) monotonically decreases on all {n_trajectories} trajectories")
         else:
             print(f"\n⚠ WARNING: {trajectory_violations} trajectories showed V increasing")
@@ -244,11 +244,11 @@ class LyapunovVerifier:
 
         error = abs(V_boundary - self.c_max)
         if error < 1e-6:
-            print(f"\n✓ Boundary condition verified (error = {error:.2e})")
+            print(f"\n  Boundary condition verified (error = {error:.2e})")
         else:
             print(f"\n⚠ Warning: boundary error = {error:.2e}")
 
-        print(f"\n✓ INVARIANT ELLIPSOID COMPUTED")
+        print(f"\n  INVARIANT ELLIPSOID COMPUTED")
         print(f"  Ω_c = {{x : x^T P x ≤ {self.c_max:.4f}}}")
         print(f"  Guarantees: |x₁| ≤ {self.L:.3f} m for all x ∈ Ω_c")
 
@@ -287,7 +287,7 @@ class LyapunovVerifier:
         if max_V <= self.c_max:
             coverage = 100.0
             verified = True
-            print(f"\n✓✓✓ FORMAL VERIFICATION SUCCESSFUL ✓✓✓")
+            print(f"\n    FORMAL VERIFICATION SUCCESSFUL    ")
             print(f"  All initial conditions lie within Ω_c")
             print(f"  Coverage: {coverage:.1f}%")
             print(f"  Safety guarantee: ZERO LANE VIOLATIONS for all t ≥ 0")
@@ -389,7 +389,7 @@ class LyapunovVerifier:
                      fontsize=16, fontweight='bold')
         plt.tight_layout()
         plt.savefig('results/ellipsoid_projection.png', dpi=300, bbox_inches='tight')
-        print("  ✓ Saved: results/ellipsoid_projection.png")
+        print("    Saved: results/ellipsoid_projection.png")
 
         # Figure 2: Trajectory simulation
         worst_x = np.array(self.verification_result['worst_corner'])
@@ -426,7 +426,7 @@ class LyapunovVerifier:
 
         plt.tight_layout()
         plt.savefig('results/trajectory_analysis.png', dpi=300, bbox_inches='tight')
-        print("  ✓ Saved: results/trajectory_analysis.png")
+        print("    Saved: results/trajectory_analysis.png")
 
         # Figure 3: Phase portrait (x1 vs x2)
         fig3, ax3 = plt.subplots(figsize=(10, 8))
@@ -464,7 +464,7 @@ class LyapunovVerifier:
         ax3.set_ylim([-0.3, 0.3])
         plt.tight_layout()
         plt.savefig('results/phase_portrait.png', dpi=300, bbox_inches='tight')
-        print("  ✓ Saved: results/phase_portrait.png")
+        print("    Saved: results/phase_portrait.png")
 
         plt.close('all')
 
@@ -534,7 +534,7 @@ class LyapunovVerifier:
         with open('results/verification_certificate.json', 'w') as f:
             json.dump(certificate, f, indent=2)
 
-        print("\n✓ Verification certificate generated: results/verification_certificate.json")
+        print("\n  Verification certificate generated: results/verification_certificate.json")
 
         # Also generate human-readable text certificate
         self._generate_text_certificate(certificate)
@@ -575,7 +575,7 @@ class LyapunovVerifier:
             f.write("VERIFICATION STATUS:\n")
             f.write("-" * 70 + "\n")
             if cert['verification_result']['status'] == 'VERIFIED':
-                f.write("✓✓✓ COMPLETE FORMAL VERIFICATION ✓✓✓\n")
+                f.write("    COMPLETE FORMAL VERIFICATION    \n")
                 f.write("Coverage: 100% of specified input space\n")
             else:
                 f.write(f"⚠ PARTIAL VERIFICATION\n")
@@ -588,7 +588,7 @@ class LyapunovVerifier:
             f.write("3. Confirming max{V(x) : x ∈ X₀} ≤ c_max\n")
             f.write("="*70 + "\n")
 
-        print("✓ Text certificate generated: results/verification_certificate.txt")
+        print("  Text certificate generated: results/verification_certificate.txt")
 
     def run_complete_verification(self, initial_bounds):
         """
@@ -603,17 +603,17 @@ class LyapunovVerifier:
 
         # Step 1: Stability
         if not self.verify_stability():
-            print("\n✗ VERIFICATION FAILED: System unstable")
+            print("\n VERIFICATION FAILED: System unstable")
             return False
 
         # Step 2: Lyapunov function
         if not self.verify_lyapunov_function():
-            print("\n✗ VERIFICATION FAILED: Invalid Lyapunov function")
+            print("\n VERIFICATION FAILED: Invalid Lyapunov function")
             return False
 
         # Step 3: Invariant set
         if not self.compute_invariant_set():
-            print("\n✗ VERIFICATION FAILED: Could not compute invariant set")
+            print("\n VERIFICATION FAILED: Could not compute invariant set")
             return False
 
         # Step 4: Initial conditions
@@ -630,7 +630,7 @@ class LyapunovVerifier:
         print("="*70)
 
         if verified:
-            print("\n✓✓✓ SUCCESS: FORMAL SAFETY GUARANTEE ESTABLISHED ✓✓✓\n")
+            print("\n    SUCCESS: FORMAL SAFETY GUARANTEE ESTABLISHED    \n")
             print("Proven: Zero lane violations for infinite time horizon")
             print(f"Coverage: 100% of specified initial conditions")
         else:
@@ -690,7 +690,7 @@ def main():
             R = np.array(learned_params['R'])
             K = np.array(learned_params['K'])
 
-            print("✓ Successfully loaded learned parameters")
+            print("  Successfully loaded learned parameters")
             print(f"\nLearned Parameters:")
             print(f"  Q = diag({np.diag(Q)})")
             print(f"  R = {R[0,0]:.3f}")
@@ -707,7 +707,7 @@ def main():
         R = np.array([[1.0]])
 
     except Exception as e:
-        print(f"✗ Error loading learned parameters: {e}")
+        print(f" Error loading learned parameters: {e}")
         print("Using default parameters...\n")
         Q = np.diag([100, 10, 50, 5])
         R = np.array([[1.0]])
@@ -735,7 +735,7 @@ def main():
     print("="*70 + "\n")
 
     if success:
-        print("✓✓✓ FORMAL PROOF SUCCESSFUL ✓✓✓")
+        print("    FORMAL PROOF SUCCESSFUL    ")
         print("\nThe learned controller is formally verified safe.")
         print("No statistical analysis needed.\n")
         print("Your project deliverable:")

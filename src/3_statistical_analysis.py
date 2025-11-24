@@ -100,7 +100,7 @@ class StatisticalAnalyzer:
                 print(f"  Processed {i+1}/{n_samples} samples...")
 
         if samples_analyzed == 0:
-            print("\n✓ All samples in verified region!")
+            print("\n  All samples in verified region!")
             return None
 
         # Compute statistics
@@ -160,7 +160,7 @@ class StatisticalAnalyzer:
         with open('results/statistical_analysis.json', 'w') as f:
             json.dump(results, f, indent=2)
 
-        print("\n✓ Results saved to results/statistical_analysis.json")
+        print("\n  Results saved to results/statistical_analysis.json")
 
         # Visualization
         self.plot_statistics(max_laterals, violation_rate)
@@ -193,7 +193,7 @@ class StatisticalAnalyzer:
 
         plt.tight_layout()
         plt.savefig('results/statistical_analysis.png', dpi=300)
-        print("✓ Visualization saved to results/statistical_analysis.png")
+        print("  Visualization saved to results/statistical_analysis.png")
         plt.close()
 
 

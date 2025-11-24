@@ -203,7 +203,7 @@ if __name__ == '__main__':
     if not VERIFAI_AVAILABLE:
         print("⚠ VerifAI not installed - Server class available but untested")
     else:
-        print("✓ VerifAI available - Server class ready")
+        print(" VerifAI available - Server class ready")
 
     # Simple test
     from simulator import LaneKeepingSimulator
@@ -226,7 +226,7 @@ if __name__ == '__main__':
     R = np.array([[1.0]])
 
     success = server.set_controller_params(Q, R)
-    print(f"Controller initialization: {'✓ Success' if success else '✗ Failed'}")
+    print(f"Controller initialization: {' Success' if success else ' Failed'}")
 
     # Test simulation
     sample = {
@@ -239,4 +239,4 @@ if __name__ == '__main__':
     result, error = server.simulate(sample)
     print(f"Test simulation: error = {error:.1f} ({'violation' if error > 0.5 else 'safe'})")
 
-    print("\n✓ Server class test complete")
+    print("\n Server class test complete")

@@ -506,7 +506,7 @@ def main():
         sys.exit(1)
 
     except Exception as e:
-        print(f"\n✗ Error during optimization: {e}")
+        print(f"\n Error during optimization: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
