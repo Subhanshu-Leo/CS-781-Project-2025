@@ -176,12 +176,21 @@ def compare_with_baselines():
         if name == 'Learned (VerifAI)' or not result['stable']:
             continue
 
-        improvement = (result['violation_rate'] - learned_result['violation_rate']) / result['violation_rate'] * 100
-
-        print(f"\nLearned vs {name}:")
-        print(f"  Violation rate improvement: {improvement:.1f}%")
-        print(f"  Baseline: {result['violation_rate']*100:.2f}% violations")
-        print(f"  Learned:  {learned_result['violation_rate']*100:.2f}% violations")
+        if result['violation_rate'] > 0:
+          improvement = (result['violation_rate'] - learned_result['violation_rate']) / result['violation_rate'] * 100
+          print(f"\nLearned vs {name}:")
+          print(f"  Violation rate improvement: {improvement:.1f}%")
+          print(f"  Baseline: {result['violation_rate']*100:.2f}% violations")
+          print(f"  Learned:  {learned_result['violation_rate']*100:.2f}% violations")
+        else:
+    # Both are 0%, compare by mean lateral deviation
+          print(f"\nLearned vs {name}:")
+          print(f"  Both achieve 0.00% violations (perfect)")
+          improvement_lateral = (result['mean_lateral'] - learned_result['mean_lateral']) / result['mean_lateral'] * 100
+          if improvement_lateral > 0:
+            print(f"  Learned reduces mean deviation by: {improvement_lateral:.1f}%")
+          else:
+            print(f"  Baseline has {-improvement_lateral:.1f}% lower deviation")
 
     # Find best baseline
     stable_baselines = {k: v for k, v in results.items()
