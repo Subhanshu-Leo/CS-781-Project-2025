@@ -30,7 +30,7 @@ class LyapunovVerifier:
         self.P_inv = np.linalg.inv(self.P)
 
         # Compute maximum invariant set
-        self.c_max = self.L**2 * self.P[0, 0]
+        self.c_max = self.L**2 / self.P_inv[0, 0]
 
         self.verification_result = None
 
