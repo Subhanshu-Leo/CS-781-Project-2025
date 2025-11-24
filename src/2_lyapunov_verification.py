@@ -110,11 +110,112 @@ class LyapunovVerifier:
             print("\n✗ FAILED: Q is not positive definite")
             return False
 
-        print(f"\n✓ LYAPUNOV FUNCTION VERIFIED")
+        print(f"\n LYAPUNOV FUNCTION VERIFIED")
         print(f"  V(x) = x^T P x")
         print(f"  V̇(x) = -x^T Q x < 0")
 
         return True
+    def verify_lyapunov_derivative_numerically(self, n_samples=1000):
+        """
+        ADDITIONAL RIGOR: Numerically verify V̇(x) < 0 everywhere
+        """
+        print("\n" + "-"*70)
+        print("ADDITIONAL VERIFICATION: Numerical Sampling of V̇(x)")
+        print("-"*70)
+
+        violations = 0
+        max_V_dot = -np.inf
+        worst_state = None
+
+        np.random.seed(42)
+
+        for i in range(n_samples):
+            # Generate random state with varying magnitudes
+            if i < n_samples // 2:
+                x = np.random.randn(4) * 0.3  # Small states
+            else:
+                x = np.random.randn(4) * 1.0  # Larger states
+
+            if np.linalg.norm(x) < 1e-6:
+                continue
+
+            # Compute V̇(x) = 2*x^T*P*(A_cl*x)
+            xdot = self.A_cl @ x
+            V_dot = 2 * x.T @ self.P @ xdot
+
+            if V_dot > max_V_dot:
+                max_V_dot = V_dot
+                worst_state = x.copy()
+
+            if V_dot >= -1e-10:
+                violations += 1
+
+        print(f"\nSampled {n_samples} random states:")
+        print(f"  Violations found (V̇ ≥ 0): {violations}")
+        print(f"  Maximum V̇(x) observed: {max_V_dot:.6e}")
+
+        if worst_state is not None:
+            print(f"  Worst state: [{worst_state[0]:.4f}, {worst_state[1]:.4f}, "
+                  f"{worst_state[2]:.4f}, {worst_state[3]:.4f}]")
+            print(f"  ||x|| = {np.linalg.norm(worst_state):.4f}")
+
+        if violations == 0 and max_V_dot < 0:
+            print(f"\n✓✓ NUMERICAL VERIFICATION PASSED")
+            print(f"   V̇(x) < 0 confirmed on all {n_samples} samples")
+        elif violations == 0:
+            print(f"\n✓ NUMERICAL VERIFICATION ACCEPTABLE")
+            print(f"   V̇(x) ≤ 0 on all samples (max within tolerance)")
+        else:
+            print(f"\n⚠ WARNING: Found {violations} numerical violations")
+
+        print("-"*70)
+
+        return violations == 0
+
+    def verify_decrease_along_trajectories(self, n_trajectories=10):
+        """
+        ADDITIONAL RIGOR: Verify V(x(t)) decreases along actual trajectories
+        """
+        print("\n" + "-"*70)
+        print("ADDITIONAL VERIFICATION: V(x) Decrease Along Trajectories")
+        print("-"*70)
+
+        trajectory_violations = 0
+
+        np.random.seed(123)
+
+        for traj_idx in range(n_trajectories):
+            x0 = np.random.randn(4) * 0.5
+
+            result = self.simulate_trajectory(x0, t_max=5.0)
+            V_trajectory = result['V_values']
+
+            # Check monotonic decrease
+            is_decreasing = True
+            max_increase = 0.0
+
+            for i in range(len(V_trajectory) - 1):
+                increase = V_trajectory[i+1] - V_trajectory[i]
+                if increase > 1e-8:
+                    is_decreasing = False
+                    max_increase = max(max_increase, increase)
+
+            if not is_decreasing:
+                trajectory_violations += 1
+                print(f"  ⚠ Trajectory {traj_idx+1}: V increased by {max_increase:.2e}")
+
+        print(f"\nAnalyzed {n_trajectories} trajectories:")
+        print(f"  Trajectories with V increasing: {trajectory_violations}")
+
+        if trajectory_violations == 0:
+            print(f"\n✓✓ TRAJECTORY VERIFICATION PASSED")
+            print(f"   V(x(t)) monotonically decreases on all {n_trajectories} trajectories")
+        else:
+            print(f"\n⚠ WARNING: {trajectory_violations} trajectories showed V increasing")
+
+        print("-"*70)
+
+        return trajectory_violations == 0
 
     def compute_invariant_set(self):
         """
