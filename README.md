@@ -5,6 +5,14 @@ Formal verification of LQR lane-keeping controller using:
 2. **Lyapunov stability theory** for formal proof
 3. **Statistical analysis** with confidence intervals (if needed)
 
+## Project Base
+
+This project extends the [VerifAI Lane Keeping Case Study](https://github.com/BerkeleyLearnVerify/VerifAI/tree/master/examples/lanekeeping).
+
+Key modifications:
+1. Parameterized LQR controller learning
+2. Formal Lyapunov-based verification
+3. Statistical confidence intervals for partial verification
 ## Project Structure
 ```
 lane_keeping_verification/

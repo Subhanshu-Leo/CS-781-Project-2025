@@ -292,7 +292,7 @@ class LQRParameterLearner:
         from skopt.utils import use_named_args
 
         if not self.use_verifai:
-            print("\n⚠ VerifAI not available. Using fallback sampling.")
+            print("\nVerifAI not available. Using fallback sampling.")
         else:
             print("\n  Using VerifAI FeatureSampler for scenario generation")
 
@@ -455,7 +455,7 @@ def main():
     # Check VerifAI availability
     if not VERIFAI_AVAILABLE:
         print("\n" + "="*70)
-        print("⚠ WARNING: VerifAI not installed!")
+        print("WARNING: VerifAI not installed!")
         print("="*70)
         print("\nTo install VerifAI:")
         print("  git clone https://github.com/BerkeleyLearnVerify/VerifAI.git")
@@ -486,7 +486,7 @@ def main():
     if VERIFAI_AVAILABLE and not args.no_verifai:
         print(f"\n  VerifAI Integration: ENABLED")
     else:
-        print(f"\n⚠ VerifAI Integration: DISABLED (using fallback)")
+        print(f"\nVerifAI Integration: DISABLED (using fallback)")
     print()
 
     # Create learner
@@ -507,7 +507,7 @@ def main():
         print("="*70 + "\n")
 
     except KeyboardInterrupt:
-        print("\n\n⚠ Optimization interrupted by user")
+        print("\n\nOptimization interrupted by user")
         if learner.best_params is not None:
             print(f"Saving best parameters found so far...")
             learner.save_results()

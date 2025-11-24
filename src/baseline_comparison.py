@@ -211,7 +211,7 @@ def compare_with_baselines():
             print(f"\n✓LEARNED CONTROLLER IS BETTER")
             print(f"  Improvement: {improvement:.1f}%")
         else:
-            print(f"\n⚠ Best baseline performs better")
+            print(f"\nBest baseline performs better")
 
     # Visualization
     generate_comparison_plots(results)

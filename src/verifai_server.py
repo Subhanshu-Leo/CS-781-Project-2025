@@ -201,7 +201,7 @@ if __name__ == '__main__':
     print("Testing LaneKeepingServer...")
 
     if not VERIFAI_AVAILABLE:
-        print("⚠ VerifAI not installed - Server class available but untested")
+        print("VerifAI not installed - Server class available but untested")
     else:
         print(" VerifAI available - Server class ready")
 

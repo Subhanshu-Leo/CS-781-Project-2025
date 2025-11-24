@@ -97,7 +97,7 @@ class LyapunovVerifier:
         if max_error < 1e-8:
             print("  Lyapunov equation satisfied: A_cl^T P + P A_cl = -Q")
         else:
-            print(f"⚠ Warning: Large residual {max_error:.2e}")
+            print(f"Warning: Large residual {max_error:.2e}")
 
         # Check Q is positive definite
         eigenvalues_Q = np.linalg.eigvals(self.Q)
@@ -166,7 +166,7 @@ class LyapunovVerifier:
             print(f"\n  NUMERICAL VERIFICATION ACCEPTABLE")
             print(f"   V̇(x) ≤ 0 on all samples (max within tolerance)")
         else:
-            print(f"\n⚠ WARNING: Found {violations} numerical violations")
+            print(f"\nWARNING: Found {violations} numerical violations")
 
         print("-"*70)
 
@@ -202,7 +202,7 @@ class LyapunovVerifier:
 
             if not is_decreasing:
                 trajectory_violations += 1
-                print(f"  ⚠ Trajectory {traj_idx+1}: V increased by {max_increase:.2e}")
+                print(f"  Trajectory {traj_idx+1}: V increased by {max_increase:.2e}")
 
         print(f"\nAnalyzed {n_trajectories} trajectories:")
         print(f"  Trajectories with V increasing: {trajectory_violations}")
@@ -211,7 +211,7 @@ class LyapunovVerifier:
             print(f"\n   TRAJECTORY VERIFICATION PASSED")
             print(f"   V(x(t)) monotonically decreases on all {n_trajectories} trajectories")
         else:
-            print(f"\n⚠ WARNING: {trajectory_violations} trajectories showed V increasing")
+            print(f"\nWARNING: {trajectory_violations} trajectories showed V increasing")
 
         print("-"*70)
 
@@ -269,7 +269,7 @@ class LyapunovVerifier:
             print(f"    V error = {error:.2e}")
             print(f"    x₁ error = {x1_error:.2e}")
         else:
-            print(f"\n⚠ Warning: boundary errors detected")
+            print(f"\nWarning: boundary errors detected")
             print(f"    V error = {error:.2e}")
             print(f"    x₁ error = {x1_error:.2e}")
 
@@ -309,7 +309,7 @@ class LyapunovVerifier:
             print(f"  ✓ Ellipsoid safely contained in lane")
             print(f"    Safety margin: {self.L - max_x1_on_boundary:.4f} m")
         else:
-            print(f"  ⚠ WARNING: Ellipsoid exceeds lane boundaries!")
+            print(f"  WARNING: Ellipsoid exceeds lane boundaries!")
             print(f"    Excess: {max_x1_on_boundary - self.L:.4f} m")
             print(f"    Scaling factor needed: {self.L / max_x1_on_boundary:.4f}")
             # Adjust c_max to be conservative
@@ -364,7 +364,7 @@ class LyapunovVerifier:
             ratio = self.c_max / max_V
             coverage = ratio * 100
             verified = False
-            print(f"\n⚠ PARTIAL VERIFICATION")
+            print(f"\nPARTIAL VERIFICATION")
             print(f"  Ratio: c_max / max_V = {ratio:.4f}")
             print(f"  Coverage: {coverage:.1f}% of input space")
             print(f"\n  Options:")
@@ -647,7 +647,7 @@ class LyapunovVerifier:
                 f.write("    COMPLETE FORMAL VERIFICATION    \n")
                 f.write("Coverage: 100% of specified input space\n")
             else:
-                f.write(f"⚠ PARTIAL VERIFICATION\n")
+                f.write(f"PARTIAL VERIFICATION\n")
                 f.write(f"Coverage: {cert['verification_result']['coverage_percent']:.1f}%\n")
 
             f.write("\n" + "="*70 + "\n")
@@ -715,7 +715,7 @@ class LyapunovVerifier:
             print("Proven: Zero lane violations for infinite time horizon")
             print(f"Coverage: 100% of specified initial conditions")
         else:
-            print(f"\n⚠ PARTIAL VERIFICATION\n")
+            print(f"\nPARTIAL VERIFICATION\n")
             print(f"Formally verified: {coverage:.1f}% of input space")
             print("Recommendation: See statistical analysis for remaining region")
 
@@ -779,7 +779,7 @@ def main():
             print(f"\nNow attempting formal verification...\n")
 
     except FileNotFoundError:
-        print("⚠ WARNING: No learned parameters found!")
+        print("WARNING: No learned parameters found!")
         print("  Expected file: results/learned_parameters.json")
         print("  Please run Phase 1 first: python src/1_learn_parameters.py")
         print("\nUsing DEFAULT parameters for demonstration purposes...\n")
@@ -824,7 +824,7 @@ def main():
         print("  - Formal safety proof (Phase 2)")
         print("  - Coverage: 100% of input space")
     else:
-        print("⚠ PARTIAL VERIFICATION")
+        print("PARTIAL VERIFICATION")
         print("\nThe learned controller is verified for a subset of inputs.")
         print("Statistical analysis REQUIRED for unverified region.\n")
         print("Next step: Run Phase 3")
